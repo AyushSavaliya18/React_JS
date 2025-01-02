@@ -59,10 +59,10 @@ function Registration() {
     <div className="form">
       <br />
       <br />
-      Registration Form {/* Display the form title */}
+      <h1>Registration Form</h1>
+      {/* Display the form title */}
       {/* Conditionally render the message (if it's set, display it) */}
-      <br />
-      <br />
+
       {/* Registration form */}
       <form onSubmit={handleSubmit}>
         {/* Username input field */}
@@ -110,10 +110,8 @@ function Registration() {
         <br />
         <br />
         {/* Submit button */}
-        <button type="submit">Register</button> {/* Submit form on click */}
-        <br />
-        <br />
-        {message && <p>{message}</p>}
+        <button type="submit" className="button">Register</button> {/* Submit form on click */}
+        {message && <p>{message}</p>}<br/>
       </form>
     </div>
   );
