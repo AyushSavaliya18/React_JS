@@ -44,30 +44,21 @@ function Nav() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Dropdown
+                  Login/Register
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <a className="dropdown-item" href="#">
-                      Action
+                    <a className="dropdown-item" href="./Login.js">
+                      Login
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
+                    <a className="dropdown-item" href="./Registration.js">
+                      Registration
                     </a>
                   </li>
                 </ul>
               </li>
-              
             </ul>
             <form className="d-flex">
               <input
