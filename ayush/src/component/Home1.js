@@ -3,6 +3,7 @@ import React from "react";
 function home() {
   return (
     <div>
+      <h1>Home</h1>
       <div
         id="carouselExampleFade"
         className="carousel slide carousel-fade"

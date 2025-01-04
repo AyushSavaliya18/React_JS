@@ -1,9 +1,12 @@
 import "./App.css";
-import Nav from "./component/Nav";
+
+
 import React from "react";
+import Nav from "./component/Nav";
 import Registration from "./component/Registration";
 import Login from "./component/Login";
-// import Home from "./component/Home1";
+
+
 
 function App() {
   return (
@@ -12,7 +15,7 @@ function App() {
       {/* <Home /> */}
       <Registration />
       <Login />
-    
+      
     </div>
   );
 }
