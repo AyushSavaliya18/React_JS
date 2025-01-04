@@ -54,7 +54,7 @@ function Login() {
       {/* Form for user login */}
       <br />
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         Email:
         <input
           type="email"
@@ -80,6 +80,9 @@ function Login() {
         <br />
         {message && <p>{message}</p>}
       </form>
+      <h3>
+        Don't have an account? <a href="./registration">Register</a>
+      </h3>
     </div>
   );
 }

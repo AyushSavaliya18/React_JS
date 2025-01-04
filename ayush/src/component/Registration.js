@@ -116,5 +116,4 @@ function Registration() {
     </div>
   );
 }
-
 export default Registration; // Export the Registration component to use in other parts of the app
