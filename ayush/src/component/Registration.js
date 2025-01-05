@@ -1,5 +1,6 @@
 import React from "react"; // Import React to use JSX and React hooks
 import {useState} from "react"; // Import the useState hook to manage state
+import Nav from "./Nav"; // Import the Nav component
 
 function Registration() {
   // State to hold form data (username, email, password, role)
@@ -56,63 +57,68 @@ function Registration() {
   };
 
   return (
-    <div className="form">
-      <br />
-      <br />
-      <h1>Registration Form</h1>
-      {/* Display the form title */}
-      {/* Conditionally render the message (if it's set, display it) */}
+    <div>
+      <Nav />
+      <div className="form">
+        <h1>Registration Form</h1>
+        {/* Display the form title */}
+        {/* Conditionally render the message (if it's set, display it) */}
 
-      {/* Registration form */}
-      <form onSubmit={handleSubmit}>
-        {/* Username input field */}
-        Username :
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange} // Update form data when the user types
-          required // Ensure the field is not empty
-        />
-        <br />
-        <br />
-        {/* Email input field */}
-        Email :
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange} // Update form data when the user types
-          required // Ensure the field is not empty
-        />
-        <br />
-        <br />
-        {/* Password input field */}
-        Password :
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange} // Update form data when the user types
-          required // Ensure the field is not empty
-        />
-        <br />
-        <br />
-        {/* Dropdown to select the user's role */}
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange} // Update form data when the user selects a role
-        >
-          <option value="user">User</option> {/* Option for 'user' role */}
-          <option value="admin">Admin</option> {/* Option for 'admin' role */}
-        </select>
-        <br />
-        <br />
-        {/* Submit button */}
-        <button type="submit" className="button">Register</button> {/* Submit form on click */}
-        {message && <p>{message}</p>}<br/>
-      </form>
+        {/* Registration form */}
+        <form onSubmit={handleSubmit}>
+          {/* Username input field */}
+          Username :
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange} // Update form data when the user types
+            required // Ensure the field is not empty
+          />
+          <br />
+          <br />
+          {/* Email input field */}
+          Email :
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange} // Update form data when the user types
+            required // Ensure the field is not empty
+          />
+          <br />
+          <br />
+          {/* Password input field */}
+          Password :
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange} // Update form data when the user types
+            required // Ensure the field is not empty
+          />
+          <br />
+          <br />
+          {/* Dropdown to select the user's role */}
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange} // Update form data when the user selects a role
+          >
+            <option value="user">User</option> {/* Option for 'user' role */}
+            <option value="admin">Admin</option> {/* Option for 'admin' role */}
+          </select>
+          <br />
+          <br />
+          {/* Submit button */}
+          <button type="submit" className="button">
+            Register
+          </button>{" "}
+          {/* Submit form on click */}
+          {message && <p>{message}</p>}
+          <br />
+        </form>
+      </div>
     </div>
   );
 }

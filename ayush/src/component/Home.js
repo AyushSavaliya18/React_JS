@@ -5,8 +5,7 @@ function home() {
   return (
     <div>
       <Nav />
-      <h1>Home</h1>
-      
+      <h1>This ia Home Page</h1>
     </div>
   );
 }

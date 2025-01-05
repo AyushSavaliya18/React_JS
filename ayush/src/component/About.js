@@ -1,12 +1,12 @@
-import React from 'react'
-
+import React from "react";
+import Nav from "./Nav";
 function About() {
   return (
     <div>
-      About
-
+      <Nav />
+      <h2>About Pages</h2>
     </div>
-  )
+  );
 }
 
-export default About
+export default About;

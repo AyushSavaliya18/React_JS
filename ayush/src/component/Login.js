@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-
+import Nav from "./Nav";
 // Define the Login component
 function Login() {
   // State for storing form data (email and password)
@@ -48,7 +48,9 @@ function Login() {
   };
 
   return (
-    <div className="form">
+    <div>
+      <Nav />
+      <div className="form">
       <h1>Login Form</h1>
       {/* Display the message if available */}
       {/* Form for user login */}
@@ -83,6 +85,7 @@ function Login() {
       <h3>
         Don't have an account? <a href="./registration">Register</a>
       </h3>
+      </div>
     </div>
   );
 }
