@@ -118,6 +118,9 @@ function Registration() {
           {message && <p>{message}</p>}
           <br />
         </form>
+        <h3>
+          Already have an Account? <a href="./login">Login</a>
+        </h3>
       </div>
     </div>
   );
