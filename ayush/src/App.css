@@ -32,10 +32,12 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .form {
   display: flex;
   flex-direction: column;
@@ -43,8 +45,10 @@
   align-items: center;
 }
 
-h1 {
-  margin-top: 100px;
+h1,
+h2 {
+  margin-top: 80px;
+  margin-left: 40px;
 }
 
 select {
