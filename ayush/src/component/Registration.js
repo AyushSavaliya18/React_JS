@@ -127,7 +127,7 @@ function Registration() {
         <h3>
           <br />
           <br />
-          If you Want to Register through Api click on
+          If you Want to Register through Api Fill Below Form
         </h3>
         <RegistrationApi />
       </div>

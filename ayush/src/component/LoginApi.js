@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function RegistrationApi() {
+function LoginApi() {
   // Form state to capture form data
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
-    role: "user",
   });
 
   const [message, setMessage] = useState("");
@@ -29,12 +27,17 @@ function RegistrationApi() {
     setError("");   // Clear previous error message
 
     try {
-      const response = await axios.post("http://localhost:3001/api/register", formData);
-      setMessage(response.data.message || "Registration successful!");
-      setFormData({ username: "", email: "", password: "", role: "user" }); // Reset form
+      const response = await axios.post("http://localhost:3001/api/login", formData);
+      setMessage(response.data.message || "Login successful!");
+      
+      // Handle the token or any other data you want to store
+      localStorage.setItem("authToken", response.data.token);  // Store token in localStorage (or sessionStorage)
+      
+      // Optionally, reset the form or navigate to another page
+      setFormData({ email: "", password: "" });
     } catch (error) {
       if (error.response) {
-        setError(error.response.data.message || "Error during registration.");
+        setError(error.response.data.message || "Error during login.");
       } else {
         setError("Error connecting to the server.");
       }
@@ -43,20 +46,8 @@ function RegistrationApi() {
 
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "20px", textAlign: "center" }}>
-      <h3>Registration Form</h3>
+      <h3>Login Form</h3>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
-          />
-        </div>
         <div>
           <label htmlFor="email">Email:</label>
           <input
@@ -81,19 +72,6 @@ function RegistrationApi() {
             style={{ margin: "10px 0", padding: "5px", width: "100%" }}
           />
         </div>
-        <div>
-          <label htmlFor="role">Role:</label>
-          <select
-            id="role"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
         <button
           type="submit"
           style={{
@@ -104,7 +82,7 @@ function RegistrationApi() {
             cursor: "pointer",
           }}
         >
-          Register
+          Login
         </button>
       </form>
       <div style={{ marginTop: "20px" }}>
@@ -115,4 +93,4 @@ function RegistrationApi() {
   );
 }
 
-export default RegistrationApi;
+export default LoginApi;

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Nav from "./Nav";
+import LoginApi from "./LoginApi";
 // Define the Login component
 function Login() {
   // State for storing form data (email and password)
@@ -85,6 +86,12 @@ function Login() {
       <h3>
         Don't have an account? <a href="./registration">Register</a>
       </h3>
+      <h3>
+          <br />
+          <br />
+          If you Want to Login through Api Fill Below Form
+        </h3>
+        <LoginApi />
       </div>
     </div>
   );
