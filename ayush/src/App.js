@@ -3,9 +3,9 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React from "react";
 import Home from "./component/Home";
 import About from "./component/About";
-
 import Registration from "./component/Registration";
 import Login from "./component/Login";
+// import RegistraionApi from "./component/RegistraionApi";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Route path="/registration" element={<Registration />} />
         </Routes>
       </BrowserRouter>
+      {/* <RegistrationApi /> */}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React from "react"; // Import React to use JSX and React hooks
 import {useState} from "react"; // Import the useState hook to manage state
 import Nav from "./Nav"; // Import the Nav component
+// import {Link} from "react-router-dom";
+import RegistrationApi from "./RegistraionApi";
 
 function Registration() {
   // State to hold form data (username, email, password, role)
@@ -121,6 +123,13 @@ function Registration() {
         <h3>
           Already have an Account? <a href="./login">Login</a>
         </h3>
+
+        <h3>
+          <br />
+          <br />
+          If you Want to Register through Api click on
+        </h3>
+        <RegistrationApi />
       </div>
     </div>
   );
