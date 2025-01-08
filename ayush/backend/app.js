@@ -24,10 +24,10 @@ db.once("open", () => {
 
 // User Schema
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, default: "user" },
+  username: {type: String, required: true},
+  email: {type: String, required: true, unique: true},
+  password: {type: String, required: true},
+  role: {type: String, default: "user"},
 });
 
 // Update the collection name to "register"
@@ -35,13 +35,13 @@ const Register = mongoose.model("Register", userSchema, "register");
 
 // Register Route (for initial sign up)
 app.post("/api/register", async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const {username, email, password, role} = req.body;
 
   try {
     // Check for existing user
-    const existingUser = await Register.findOne({ email });
+    const existingUser = await Register.findOne({email});
     if (existingUser) {
-      return res.status(400).json({ message: "Email is already registered." });
+      return res.status(400).json({message: "Email is already registered."});
     }
 
     // Create and save new user (no password hashing)
@@ -53,37 +53,37 @@ app.post("/api/register", async (req, res) => {
     });
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully!" });
+    res.status(201).json({message: "User registered successfully!"});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred during registration." });
+    res.status(500).json({message: "An error occurred during registration."});
   }
 });
 
 // Login Route (for authentication)
 app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+  const {email, password} = req.body;
 
   try {
     // Find user by email
-    const user = await Register.findOne({ email });
+    const user = await Register.findOne({email});
     if (!user) {
-      return res.status(400).json({ message: "Invalid Email or Password" });
+      return res.status(400).json({message: " Email not Found"});
     }
 
     // Compare the entered password with the stored password (no hashing, direct comparison)
     if (password !== user.password) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({message: "Invalid Email or Password"});
     }
 
     // Send back the user details (no token generation)
     res.status(200).json({
       message: "Login successful",
-      user: { username: user.username, email: user.email, role: user.role },
+      user: {username: user.username, email: user.email, role: user.role},
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred during login." });
+    res.status(500).json({message: "An error occurred during login."});
   }
 });
 
