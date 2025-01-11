@@ -31,6 +31,11 @@ function Nav() {
                   About
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href="./AddProduct">
+                  Products
+                </a>
+              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
