@@ -1,9 +1,9 @@
-import React from "react";
-import {useState, useEffect} from "react";
+import React, {useState} from "react";
+import axios from "axios";
 
-function AddProduct({onSubmit, initialData}) {
+function AddProduct() {
   const [ProductData, setProductData] = useState({
-    name: "",
+    product_name: "",
     price: "",
     qty: "",
     size: "",
@@ -12,89 +12,136 @@ function AddProduct({onSubmit, initialData}) {
     brand_name: "",
   });
 
-  useEffect(() => {
-    if (initialData) setProductData(initialData);
-  }, [initialData]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const {name, value} = e.target;
     setProductData({...ProductData, [name]: value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(ProductData);
+
+    try {
+      // Clear previous errors or success messages
+      setError("");
+      setSuccess("");
+
+      // Send POST request to the backend API
+      const response = await axios.post(
+        "http://localhost:8000/api/products", // Backend API URL
+        ProductData
+      );
+
+      // If the request was successful
+      console.log("Product added:", response.data);
+      setSuccess("Product added successfully!");
+    } catch (error) {
+      console.error(
+        "Error adding product:",
+        error.response ? error.response.data : error.message
+      );
+      setError(
+        "There was an error adding the product. Please check the console for more details."
+      );
+    }
   };
 
   return (
-    <div>
-      AddProduct
+    <div className="add-product-container" style={{textAlign: "center"}}>
+      <h3>Add New Product</h3>
+      <br />
+      <br />
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="product_name"
-          placeholder="Product Name"
-          value={ProductData.product_name}
-          onChange={handleChange}
-          required
-        />
+        <div className="form-group">
+          <label>Product Name:</label>
+          <input
+            type="text"
+            name="product_name"
+            value={ProductData.product_name}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <br />
+
+        <div className="form-group">
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={ProductData.price}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <br />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={ProductData.price}
-          onChange={handleChange}
-          required
-        />
+
+        <div className="form-group">
+          <label>Quantity:</label>
+          <input
+            type="number"
+            name="qty"
+            value={ProductData.qty}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <br />
+
+        <div className="form-group">
+          <label>Size:</label>
+          <input
+            type="text"
+            name="size"
+            value={ProductData.size}
+            onChange={handleChange}
+          />
+        </div>
         <br />
-        <input
-          type="number"
-          name="qty"
-          placeholder="Quantity"
-          value={ProductData.qty}
-          onChange={handleChange}
-          required
-        />
+
+        <div className="form-group">
+          <label>Image URL:</label>
+          <input
+            type="text"
+            name="image"
+            value={ProductData.image}
+            onChange={handleChange}
+          />
+        </div>
         <br />
+
+        <div className="form-group">
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={ProductData.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <br />
-        <input
-          type="text"
-          name="size"
-          placeholder="Size"
-          value={ProductData.size}
-          onChange={handleChange}
-        />
+
+        <div className="form-group">
+          <label>Brand Name:</label>
+          <input
+            type="text"
+            name="brand_name"
+            value={ProductData.brand_name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
         <br />
-        <br />
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={ProductData.image}
-          onChange={handleChange}
-        />
-        <br />
-        <br />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={ProductData.description}
-          onChange={handleChange}
-          required
-        ></textarea><br/><br/>
-        <input
-          type="text"
-          name="brand_name"
-          placeholder="Brand Name"
-          value={ProductData.brand_name}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+
+        {error && <div className="alert">{error}</div>}
+        {success && (
+          <div className="alert" style={{color: "green"}}>
+            {success}
+          </div>
+        )}
         <button type="submit">Submit</button>
       </form>
     </div>

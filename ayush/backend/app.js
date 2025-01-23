@@ -1,26 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // Initialize the app
 const app = express();
-const PORT = 3001;
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors()); // Allow cross-origin requests
+app.use(bodyParser.json()); // Parse JSON request bodies
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/Ayush", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "Connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+mongoose
+  .connect("mongodb://127.0.0.1:27017/React", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -87,7 +82,34 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+const productSchema = new mongoose.Schema({
+  product_name: {type: String, required: true},
+  price: {type: Number, required: true},
+  qty: {type: Number, required: true},
+  size: {type: String},
+  image: {type: String},
+  description: {type: String, required: true},
+  brand_name: {type: String, required: true},
+});
+
+const Product = mongoose.model("Product", productSchema);
+
+// POST route to add a product
+app.post("/api/products", async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).send({message: "Product added successfully"});
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res
+      .status(500)
+      .send({message: "Error adding product", error: error.message});
+  }
+});
+
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const port = 8000;
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
