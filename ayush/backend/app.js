@@ -108,6 +108,41 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
+app.put('/api/products/:id', async (req, res) => {
+  const { id } = req.params;
+  const { product_name, price, qty, size, image, description, brand_name } = req.body;
+
+  try {
+    // Find the product by its ID
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Update the product fields, only updating fields that are present in the request body
+    product.product_name = product_name || product.product_name;
+    product.price = price || product.price;
+    product.qty = qty || product.qty;
+    product.size = size || product.size;
+    product.image = image || product.image;
+    product.description = description || product.description;
+    product.brand_name = brand_name || product.brand_name;
+
+    // Save the updated product to the database
+    await product.save();
+
+    // Return the updated product as the response
+    res.status(200).json({
+      message: 'Product updated successfully!',
+      product
+    });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ message: 'Error updating product', error: error.message });
+  }
+});
+
 // Start the server
 const port = 8000;
 app.listen(port, () => {

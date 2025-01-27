@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Header from "./Header";
 
-function AddProduct() {
+function UpdateProduct({ productId }) {
   const [ProductData, setProductData] = useState({
     product_name: "",
     price: "",
@@ -16,9 +15,27 @@ function AddProduct() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Fetch existing product data when the component mounts or productId changes
+  useEffect(() => {
+    if (productId) {
+      const fetchProductData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/api/products/${productId}`
+          );
+          setProductData(response.data); // Populate state with the product data
+        } catch (error) {
+          console.error("Error fetching product:", error);
+          setError("Error fetching product data.");
+        }
+      };
+      fetchProductData();
+    }
+  }, [productId]);
+
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setProductData({...ProductData, [name]: value});
+    const { name, value } = e.target;
+    setProductData({ ...ProductData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -29,30 +46,29 @@ function AddProduct() {
       setError("");
       setSuccess("");
 
-      // Send POST request to the backend API
-      const response = await axios.post(
-        "http://localhost:8000/api/products", // Backend API URL
+      // Send PUT request to update the product
+      const response = await axios.put(
+        `http://localhost:8000/api/products/${productId}`, // Backend API URL
         ProductData
       );
 
       // If the request was successful
-      console.log("Product added:", response.data);
-      setSuccess("Product added successfully!");
+      console.log("Product updated:", response.data);
+      setSuccess("Product updated successfully!");
     } catch (error) {
       console.error(
-        "Error adding product:",
+        "Error updating product:",
         error.response ? error.response.data : error.message
       );
       setError(
-        "There was an error adding the product. Please check the console for more details."
+        "There was an error updating the product. Please check the console for more details."
       );
     }
   };
 
   return (
-    <div className="add-product-container" style={{textAlign: "center"}}>
-      <Header/>
-      <h3>Add New Product</h3>
+    <div className="update-product-container" style={{ textAlign: "center" }}>
+      <h3>Update Product</h3>
       <br />
       <br />
       <form onSubmit={handleSubmit}>
@@ -140,14 +156,14 @@ function AddProduct() {
 
         {error && <div className="alert">{error}</div>}
         {success && (
-          <div className="alert" style={{color: "green"}}>
+          <div className="alert" style={{ color: "green" }}>
             {success}
           </div>
         )}
-        <button type="submit">Submit</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;
