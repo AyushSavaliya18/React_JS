@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom"; // Import useParams from react-router-dom
 import axios from "axios";
+import Header from "./Header";
 
-function UpdateProduct({ productId }) {
+function UpdateProduct() {
+  const {productId} = useParams(); // Extract productId from the URL
   const [ProductData, setProductData] = useState({
     product_name: "",
     price: "",
@@ -11,67 +14,65 @@ function UpdateProduct({ productId }) {
     description: "",
     brand_name: "",
   });
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Fetch existing product data when the component mounts or productId changes
   useEffect(() => {
+    // Make sure productId is available before proceeding
     if (productId) {
       const fetchProductData = async () => {
         try {
           const response = await axios.get(
             `http://localhost:8000/api/products/${productId}`
           );
-          setProductData(response.data); // Populate state with the product data
+          setProductData(response.data);
         } catch (error) {
           console.error("Error fetching product:", error);
           setError("Error fetching product data.");
         }
       };
       fetchProductData();
+    } else {
+      setError("Product ID is missing in the URL.");
     }
   }, [productId]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProductData({ ...ProductData, [name]: value });
+    const {name, value} = e.target;
+    setProductData({...ProductData, [name]: value});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Make sure productId is defined before submitting
+    if (!productId) {
+      setError("Product ID is missing.");
+      return;
+    }
+
     try {
-      // Clear previous errors or success messages
       setError("");
       setSuccess("");
 
-      // Send PUT request to update the product
       const response = await axios.put(
-        `http://localhost:8000/api/products/${productId}`, // Backend API URL
+        `http://localhost:8000/api/products/${productId}`,
         ProductData
       );
+      setProductData(response.data);
 
-      // If the request was successful
-      console.log("Product updated:", response.data);
       setSuccess("Product updated successfully!");
     } catch (error) {
-      console.error(
-        "Error updating product:",
-        error.response ? error.response.data : error.message
-      );
-      setError(
-        "There was an error updating the product. Please check the console for more details."
-      );
+      setError("Error updating product.");
     }
   };
 
   return (
-    <div className="update-product-container" style={{ textAlign: "center" }}>
+    <div>
+      <Header />
       <h3>Update Product</h3>
-      <br />
-      <br />
-      <form onSubmit={handleSubmit}>
+
+      <form onSubmit={handleSubmit} style={{textAlign: "center"}}>
         <div className="form-group">
           <label>Product Name:</label>
           <input
@@ -83,7 +84,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Price:</label>
           <input
@@ -95,7 +95,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Quantity:</label>
           <input
@@ -107,7 +106,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Size:</label>
           <input
@@ -118,7 +116,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Image URL:</label>
           <input
@@ -129,7 +126,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Description:</label>
           <textarea
@@ -140,7 +136,6 @@ function UpdateProduct({ productId }) {
           />
         </div>
         <br />
-
         <div className="form-group">
           <label>Brand Name:</label>
           <input
@@ -151,15 +146,10 @@ function UpdateProduct({ productId }) {
             required
           />
         </div>
-
         <br />
-
-        {error && <div className="alert">{error}</div>}
-        {success && (
-          <div className="alert" style={{ color: "green" }}>
-            {success}
-          </div>
-        )}
+        {error && <div>{error}</div>}
+        {success && <div>{success}</div>}
+        <br />
         <button type="submit">Update</button>
       </form>
     </div>

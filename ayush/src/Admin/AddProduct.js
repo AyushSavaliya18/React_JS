@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "./Header";
 
 function AddProduct() {
+  
   const [ProductData, setProductData] = useState({
     product_name: "",
     price: "",
@@ -145,6 +146,7 @@ function AddProduct() {
           </div>
         )}
         <button type="submit">Submit</button>
+        <br />
       </form>
     </div>
   );
