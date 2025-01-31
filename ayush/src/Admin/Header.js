@@ -47,16 +47,16 @@ function Header() {
                   Product
                 </a>
                 <ul className="dropdown-menu">
-                  <li>
+                  {/* <li>
                     <a className="dropdown-item" href="./AddProduct.js">
                       AddProduct
                     </a>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <a className="dropdown-item" href="./UpdateProduct.js">
                       View Product
                     </a>
-                  </li>
+                  </li> */}
 
                   <li>
                     <a className="dropdown-item" href="./Home.js">

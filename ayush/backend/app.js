@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
 const Register = mongoose.model("Register", userSchema, "register");
 
 // Register Route (for initial sign up)
+
+
+
 app.post("/api/register", async (req, res) => {
   const {username, email, password, role} = req.body;
 
@@ -87,13 +90,28 @@ const productSchema = new mongoose.Schema({
   price: {type: Number, required: true},
   qty: {type: Number, required: true},
   size: {type: String},
-  image: {type: String},
+  image: {type: Array, required: true},
   description: {type: String, required: true},
   brand_name: {type: String, required: true},
 });
 
 const Product = mongoose.model("Product", productSchema);
 
+
+app.get("/api/getallproduct", async (req, res) => {
+  try {
+    const products = await Product.find(); // Fetch all products from DB
+
+    if (products.length === 0) {
+      return res.status(404).json({message: "No products found"});
+    }
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({message: "Error fetching products"});
+  }
+});
 // POST route to add a product
 app.post("/api/products", async (req, res) => {
   try {
@@ -108,16 +126,17 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
-app.put('/api/products/:id', async (req, res) => {
-  const { id } = req.params;
-  const { product_name, price, qty, size, image, description, brand_name } = req.body;
+app.put("/api/products/:id", async (req, res) => {
+  const {id} = req.params;
+  const {product_name, price, qty, size, image, description, brand_name} =
+    req.body;
 
   try {
     // Find the product by its ID
     const product = await Product.findById(id);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({message: "Product not found"});
     }
 
     // Update the product fields, only updating fields that are present in the request body
@@ -134,12 +153,33 @@ app.put('/api/products/:id', async (req, res) => {
 
     // Return the updated product as the response
     res.status(200).json({
-      message: 'Product updated successfully!',
-      product
+      message: "Product updated successfully!",
+      product,
     });
   } catch (error) {
-    console.error('Error updating product:', error);
-    res.status(500).json({ message: 'Error updating product', error: error.message });
+    console.error("Error updating product:", error);
+    res
+      .status(500)
+      .json({message: "Error updating product", error: error.message});
+  }
+});
+
+app.delete("/api/products/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Check if the product exists
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({message: "Product not found"});
+    }
+
+    // Delete the product
+    await Product.findByIdAndDelete(productId);
+    res.status(200).json({message: "Product deleted successfully"});
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({message: "Error deleting product"});
   }
 });
 

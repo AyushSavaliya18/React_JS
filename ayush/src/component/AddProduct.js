@@ -35,7 +35,7 @@ function AddProduct({onSubmit, initialData}) {
 
   return (
     <div>
-      <h2>Add Product</h2>
+      <h2>Add Product </h2>
       {/* Render the form to collect product information */}
       <form onSubmit={handleSubmit}>
         {/* Input field for the product name */}

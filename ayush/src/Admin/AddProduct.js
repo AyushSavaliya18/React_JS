@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
-import Header from "./Header";
+
 
 function AddProduct() {
-  
   const [ProductData, setProductData] = useState({
     product_name: "",
     price: "",
@@ -52,7 +51,6 @@ function AddProduct() {
 
   return (
     <div className="add-product-container" style={{textAlign: "center"}}>
-      <Header/>
       <h3>Add New Product</h3>
       <br />
       <br />
