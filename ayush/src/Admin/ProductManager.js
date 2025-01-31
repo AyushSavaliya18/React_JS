@@ -8,7 +8,7 @@ function ProductManager() {
     price: "",
     qty: "",
     size: "",
-    image: [],
+    image: "",
     description: "",
     brand_name: "",
   });
@@ -20,9 +20,8 @@ function ProductManager() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/ShowProduct");
-      console.log("Fetched products:", res.data); // Log the response
-      setProducts(res.data.products || res.data); // Ensure you're setting products correctly
+      const res = await axios.get("http://localhost:8000/api/getallproduct");
+      setProducts(res.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -35,23 +34,14 @@ function ProductManager() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const updatedProductData = {
-        ...productData,
-        image: productData.image.split(","), // Convert comma-separated string to an array
-      };
-
       if (editingId) {
         await axios.put(
-          `http://localhost:8000/api/UpdateProduct/${editingId}`,
-          updatedProductData
+          `http://localhost:8000/api/products/${editingId}`,
+          productData
         );
       } else {
-        await axios.post(
-          "http://localhost:8000/api/AddProduct",
-          updatedProductData
-        );
+        await axios.post("http://localhost:8000/api/products", productData);
       }
-
       fetchProducts();
       setProductData({
         product_name: "",
@@ -71,7 +61,7 @@ function ProductManager() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        await axios.delete(`http://localhost:8000/api/DeleteProducts/${id}`);
+        await axios.delete(`http://localhost:8000/api/products/${id}`);
         fetchProducts();
       } catch (error) {
         console.error("Error deleting product:", error);
@@ -80,17 +70,14 @@ function ProductManager() {
   };
 
   const handleEdit = (product) => {
-    setProductData({
-      ...product,
-      image: product.image.join(","), // Convert array back to string for input field
-    });
+    setProductData(product);
     setEditingId(product._id);
   };
 
   return (
     <div className="container">
       <h2>{editingId ? "Edit Product" : "Add Product"}</h2>
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="product_name"
@@ -98,7 +85,7 @@ function ProductManager() {
           value={productData.product_name}
           onChange={handleChange}
           required
-        />{" "}
+        />
         <br />
         <input
           type="number"
@@ -129,7 +116,7 @@ function ProductManager() {
         <input
           type="text"
           name="image"
-          placeholder="Image URLs (comma-separated)"
+          placeholder="Image URL"
           value={productData.image}
           onChange={handleChange}
         />
@@ -154,37 +141,17 @@ function ProductManager() {
           {editingId ? "Update Product" : "Add Product"}
         </button>
       </form>
-      <br />
-
       <h2>Product List</h2>
-      <ul className="product-list">
+      <ul>
         {products.length > 0 ? (
           products.map((product) => (
-            <li key={product._id} className="product-item">
-              {product.image.length > 0 && (
-                <img
-                  src={product.image[0]}
-                  alt={product.product_name}
-                  className="product-img"
-                />
-              )}
-              <div>
-                <h3>{product.product_name}</h3>
-                <p>Price: ${product.price}</p>
-                <p>Quantity: {product.qty}</p>
-                <button
-                  className="edit-btn"
-                  onClick={() => handleEdit(product)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(product._id)}
-                >
-                  Delete
-                </button>
-              </div>
+            <li key={product._id}>
+              <img src={product.image} alt={product.product_name} width="100" />
+              <h3>{product.product_name}</h3>
+              <p>Price: ${product.price}</p>
+              <p>Quantity: {product.qty}</p>
+              <button onClick={() => handleEdit(product)}>Edit</button>
+              <button onClick={() => handleDelete(product._id)}>Delete</button>
             </li>
           ))
         ) : (
