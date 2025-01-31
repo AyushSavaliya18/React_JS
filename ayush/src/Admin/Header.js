@@ -6,7 +6,7 @@ function Header() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <a className="navbar-brand" href="/Home">
-            Navbar
+            E-Commerce
           </a>
           <button
             className="navbar-toggler"

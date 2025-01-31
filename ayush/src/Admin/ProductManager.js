@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import "./Product.css";
 
 function ProductManager() {
   const [products, setProducts] = useState([]);
@@ -148,7 +149,7 @@ function ProductManager() {
             <li key={product._id}>
               <img src={product.image} alt={product.product_name} width="100" />
               <h3>{product.product_name}</h3>
-              <p>Price: ${product.price}</p>
+              <p>Price: ₹{product.price}</p>
               <p>Quantity: {product.qty}</p>
               <button onClick={() => handleEdit(product)}>Edit</button>
               <button onClick={() => handleDelete(product._id)}>Delete</button>
