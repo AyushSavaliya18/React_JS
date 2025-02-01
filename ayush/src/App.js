@@ -6,6 +6,8 @@ import About from "./component/About";
 import Registration from "./component/Registration";
 import Login from "./component/Login";
 import AdminHome from "./Admin/AdminHome";
+import ProductList from "./component/ProductList";
+import ProductManager from "./Admin/ProductManager";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
+          <Route path="/" element={<ProductManager />} />
+          <Route path="/products" element={<ProductList />} />
         </Routes>
       </BrowserRouter>
     </div>
