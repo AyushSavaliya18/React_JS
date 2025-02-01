@@ -41,3 +41,8 @@ p {
     font-size: 14px;
     margin: 5px 0;
 }
+
+.slider-img {
+    height: 500px;
+    object-fit: cover;
+}
