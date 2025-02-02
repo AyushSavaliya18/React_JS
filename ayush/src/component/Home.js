@@ -2,6 +2,7 @@ import React from "react";
 import ProductList from "./ProductList";
 import Nav from "./Nav";
 import Slider from "./Slider";
+import Pagination from "./Pagination";
 
 function Home() {
   return (
@@ -9,6 +10,7 @@ function Home() {
       <Nav />
       <Slider />
       <ProductList />
+      <Pagination />
     </div>
   );
 }
