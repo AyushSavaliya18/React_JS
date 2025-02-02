@@ -3,6 +3,7 @@ import ProductList from "./ProductList";
 import Nav from "./Nav";
 import Slider from "./Slider";
 import Pagination from "./Pagination";
+import CustomerFooter from "./CustomerFooter";
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
       <Slider />
       <ProductList />
       <Pagination />
+      <CustomerFooter />
     </div>
   );
 }

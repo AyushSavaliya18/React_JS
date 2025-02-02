@@ -79,7 +79,7 @@ function ProductManager() {
     <div className="container">
       <h2>{editingId ? "Edit Product" : "Add Product"}</h2>
       <form onSubmit={handleSubmit}>
-        <input
+        <input 
           type="text"
           name="product_name"
           placeholder="Product Name"
@@ -88,7 +88,7 @@ function ProductManager() {
           required
         />
         <br />
-        <input
+        <input className="Field"
           type="number"
           name="price"
           placeholder="Price"
@@ -97,7 +97,7 @@ function ProductManager() {
           required
         />
         <br />
-        <input
+        <input className="Field"
           type="number"
           name="qty"
           placeholder="Quantity"
@@ -106,7 +106,7 @@ function ProductManager() {
           required
         />
         <br />
-        <input
+        <input className="Field"
           type="text"
           name="size"
           placeholder="Size"
@@ -114,7 +114,7 @@ function ProductManager() {
           onChange={handleChange}
         />
         <br />
-        <input
+        <input className="Field"
           type="text"
           name="image"
           placeholder="Image URL"
@@ -122,7 +122,7 @@ function ProductManager() {
           onChange={handleChange}
         />
         <br />
-        <input
+        <input className="Field"
           type="text"
           name="description"
           placeholder="Description"
@@ -130,7 +130,7 @@ function ProductManager() {
           onChange={handleChange}
         />
         <br />
-        <input
+        <input className="Field"
           type="text"
           name="brand_name"
           placeholder="Brand Name"
@@ -138,18 +138,18 @@ function ProductManager() {
           onChange={handleChange}
         />
         <br />
-        <button type="submit">
+        <button type="submit"  className="submit">
           {editingId ? "Update Product" : "Add Product"}
         </button>
       </form>
       <h2>Product List</h2>
-      <ul>
+      <ul className="ul">
         {products.length > 0 ? (
           products.map((product) => (
-            <li key={product._id}>
-              <img src={product.image} alt={product.product_name} width="100" />
-              <h3>{product.product_name}</h3>
-              <p>Price: ₹{product.price}</p>
+            <li  className="List" key={product._id}>
+              <img className="Photo" src={product.image} alt={product.product_name} width="100" />
+              <h3 className="Name">{product.product_name}</h3>
+              <p className="P">Price: ₹{product.price}</p>
               <p>Quantity: {product.qty}</p>
               <button onClick={() => handleEdit(product)}>Edit</button>
               <button onClick={() => handleDelete(product._id)}>Delete</button>

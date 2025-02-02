@@ -70,7 +70,7 @@ function Nav() {
                 </ul>
               </li>
             </ul>
-            {/* <form className="d-flex">
+            <form className="d-flex">
               <input
                 className="form-control me-2"
                 type="search"
@@ -80,7 +80,7 @@ function Nav() {
               <button className="btn btn-outline-success" type="submit">
                 Search
               </button>
-            </form> */}
+            </form>
           </div>
         </div>
       </nav>
