@@ -64,7 +64,7 @@ function ProductPrice() {
               />
               <div className="card-body">
                 <h5 className="card-title text-truncate">{product.title}</h5>
-                <h5 className="card-title">Price: ${product.price}</h5>
+                <h5 className="card-title">Price: ₹{product.price}</h5>
                 <p className="card-text text-truncate">{product.description}</p>
                 <button className="btn btn-primary mx-3">Add to Cart</button>
                 <button className="btn btn-primary">Buy Now</button>
