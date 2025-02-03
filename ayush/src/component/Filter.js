@@ -5,7 +5,6 @@ function Filter({onEdit, onDelete}) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(""); // For search filter
@@ -29,7 +28,6 @@ function Filter({onEdit, onDelete}) {
   }, []);
 
   const handleSort = (order) => {
-    // setSortOrder(order);
     const sorted = [...filteredProducts].sort((a, b) =>
       order === "asc" ? a.price - b.price : b.price - a.price
     );
@@ -48,7 +46,7 @@ function Filter({onEdit, onDelete}) {
   const handleSearch = (query) => {
     setSearchQuery(query);
     const filtered = products.filter((product) =>
-      product.title.toLowerCase().includes(query.toLowerCase())
+      product.product_name?.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredProducts(filtered);
     setCurrentPage(1); // Reset to first page after searching
@@ -151,12 +149,12 @@ function Filter({onEdit, onDelete}) {
                   <img
                     src={product.image}
                     className="card-img-top"
-                    alt="Product Name"
+                    alt={product.product_name || "Product Image"}
                     style={{height: "200px", objectFit: "contain"}}
                   />
                   <div className="card-body">
                     <h5 className="card-title text-truncate">
-                      {product.title}
+                      {product.product_name || "No Name"}
                     </h5>
                     <h6 className="card-subtitle mb-2 text-muted">
                       Price: ₹{product.price}
@@ -183,7 +181,6 @@ function Filter({onEdit, onDelete}) {
             <button
               className="btn btn-outline-secondary me-2"
               onClick={() => handlePageChange("prev")}
-              // disabled={currentPage === 1}
             >
               Previous
             </button>
@@ -194,7 +191,6 @@ function Filter({onEdit, onDelete}) {
             <button
               className="btn btn-outline-secondary ms-2"
               onClick={() => handlePageChange("next")}
-              // disabled={currentPage === Math.ceil(filteredProducts.length / itemsPerPage)}
             >
               Next
             </button>
