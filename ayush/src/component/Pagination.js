@@ -10,12 +10,10 @@ function ProductPrice() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/getallproduct");
-        const totalProducts = response.data.length;
         // 36
-
+        
         // Paginate the products
-
+        
         //  s= 1-1*6 =0
         //  s1 = 2-1*6=6
         //  s2= 3-1*6=12
@@ -23,6 +21,8 @@ function ProductPrice() {
         //  s4= 5-1*6=24;
         //  s5= 6-1*6=30
         //  s6= 7-1*6=36;
+        const response = await axios.get("http://localhost:8000/api/getallproduct");
+        const totalProducts = response.data.length;
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
 

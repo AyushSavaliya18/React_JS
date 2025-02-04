@@ -1,26 +1,30 @@
-import React, {useState, useEffect} from "react"; // Import React hooks
+import React, { useState, useEffect } from "react"; // Import React hooks
 import axios from "axios"; // Import Axios for API calls
-import {Modal, Button} from "react-bootstrap"; // Import Bootstrap Modal components
+import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal components
 
-function AddToCart({onEdit, onDelete}) {
+function AddToCart({ onEdit, onDelete }) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState([0, 70000]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState([]); // Cart state
   const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const itemsPerPage = 6;
+  const pageSize = 6; // Items per page
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/getallproduct"
-        );
+        const response = await axios.get("http://localhost:8000/api/getallproduct");
+        const totalProducts = response.data.length;
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+
         setProducts(response.data);
-        setFilteredProducts(response.data);
+        setFilteredProducts(response.data.slice(startIndex, endIndex));
+        setTotalPages(Math.ceil(totalProducts / pageSize));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -28,7 +32,7 @@ function AddToCart({onEdit, onDelete}) {
     };
 
     fetchProducts();
-  }, []);
+  }, [currentPage]); // Re-fetch products when `currentPage` changes
 
   const handleSort = (order) => {
     const sorted = [...filteredProducts].sort((a, b) =>
@@ -55,33 +59,17 @@ function AddToCart({onEdit, onDelete}) {
     setCurrentPage(1);
   };
 
-  const handlePageChange = (direction) => {
-    if (
-      direction === "next" &&
-      currentPage < Math.ceil(filteredProducts.length / itemsPerPage)
-    ) {
-      setCurrentPage(currentPage + 1);
-    } else if (direction === "prev" && currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   const handleAddToCart = (product) => {
     setCart((prevCart) => {
       const productExists = prevCart.find((item) => item._id === product._id);
       if (productExists) {
         return prevCart.map((item) =>
           item._id === product._id
-            ? {...item, quantity: item.quantity + 1}
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prevCart, {...product, quantity: 1}];
+        return [...prevCart, { ...product, quantity: 1 }];
       }
     });
   };
@@ -91,7 +79,7 @@ function AddToCart({onEdit, onDelete}) {
       const existingProduct = prevCart.find((item) => item._id === productId);
       if (existingProduct.quantity > 1) {
         return prevCart.map((item) =>
-          item._id === productId ? {...item, quantity: item.quantity - 1} : item
+          item._id === productId ? { ...item, quantity: item.quantity - 1 } : item
         );
       } else {
         return prevCart.filter((item) => item._id !== productId);
@@ -112,11 +100,23 @@ function AddToCart({onEdit, onDelete}) {
   const handleModalClose = () => setShowModal(false);
   const handleModalShow = () => setShowModal(true);
 
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   if (loading) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{height: "100vh"}}
+        style={{ height: "100vh" }}
       >
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
@@ -169,14 +169,14 @@ function AddToCart({onEdit, onDelete}) {
 
         <div className="col-md-9">
           <div className="row">
-            {paginatedProducts.map((product) => (
+            {filteredProducts.map((product) => (
               <div className="col-lg-4 col-md-6 mb-4" key={product._id}>
                 <div className="card h-100 shadow-sm">
                   <img
                     src={product.image}
                     className="card-img-top"
                     alt={product.product_name}
-                    style={{height: "200px", objectFit: "contain"}}
+                    style={{ height: "200px", objectFit: "contain" }}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.product_name}</h5>
@@ -252,6 +252,27 @@ function AddToCart({onEdit, onDelete}) {
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="d-flex justify-content-center mt-4">
+        <button
+          className="btn btn-sm btn-outline-primary mx-1"
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span className="btn btn-sm btn-light mx-1">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          className="btn btn-sm btn-outline-primary mx-1"
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
