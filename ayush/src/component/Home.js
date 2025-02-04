@@ -4,7 +4,8 @@ import Nav from "./Nav";
 import Slider from "./Slider";
 // import Pagination from "./Pagination";
 import CustomerFooter from "./CustomerFooter";
-import Filter from "./Filter";
+// import Filter from "./Filter";
+import AddToCart from "./Addtocart";
 
 function Home() {
   return (
@@ -13,7 +14,8 @@ function Home() {
       <Slider />
       {/* <ProductList /> */}
       {/* <Pagination /> */}
-      <Filter />
+      {/* <Filter /> */}
+      <AddToCart />
       <CustomerFooter />
     </div>
   );

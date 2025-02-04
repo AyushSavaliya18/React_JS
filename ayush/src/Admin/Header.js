@@ -22,7 +22,11 @@ function Header() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/Home">
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="/Admin"
+                >
                   Home
                 </a>
               </li>
@@ -32,7 +36,7 @@ function Header() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/logout">
+                <a className="nav-link" href="/Home">
                   Logout
                 </a>
               </li>
@@ -59,7 +63,7 @@ function Header() {
                   </li> */}
 
                   <li>
-                    <a className="dropdown-item" href="./Home.js">
+                    <a className="dropdown-item" href="./AdminHome.js">
                       Profile
                     </a>
                   </li>

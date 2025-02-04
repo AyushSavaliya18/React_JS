@@ -47,7 +47,7 @@ function Slider() {
 
         {/* Next Button */}
         <button
-          className="carousel-control-next"
+          className="carousel-control-next mb-5"
           type="button"
           data-bs-target="#carouselExampleControls"
           data-bs-slide="next"
@@ -59,6 +59,7 @@ function Slider() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
+      <div className="margin"></div>
     </div>
   );
 }

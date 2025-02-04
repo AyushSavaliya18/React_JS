@@ -83,7 +83,7 @@ function Filter({onEdit, onDelete}) {
 
   return (
     <div className="container-fluid my-4">
-      <h1 className="text-center mb-4">Product Filter</h1>
+      
       <div className="row">
         {/* Left Column: Filters */}
         <div className="col-md-3">
