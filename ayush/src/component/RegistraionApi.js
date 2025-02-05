@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 function RegistrationApi() {
@@ -15,7 +15,7 @@ function RegistrationApi() {
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -26,12 +26,15 @@ function RegistrationApi() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(""); // Clear previous success message
-    setError("");   // Clear previous error message
+    setError(""); // Clear previous error message
 
     try {
-      const response = await axios.post("http://localhost:3001/api/register", formData);
+      const response = await axios.post(
+        "http://localhost:8000/api/register",
+        formData
+      );
       setMessage(response.data.message || "Registration successful!");
-      setFormData({ username: "", email: "", password: "", role: "user" }); // Reset form
+      setFormData({username: "", email: "", password: "", role: "user"}); // Reset form
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || "Error during registration.");
@@ -42,7 +45,14 @@ function RegistrationApi() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px", textAlign: "center" }}>
+    <div
+      style={{
+        maxWidth: "400px",
+        margin: "auto",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
       <h3>Registration Form</h3>
       <form onSubmit={handleSubmit}>
         <div>
@@ -54,7 +64,7 @@ function RegistrationApi() {
             value={formData.username}
             onChange={handleChange}
             required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           />
         </div>
         <div>
@@ -66,7 +76,7 @@ function RegistrationApi() {
             value={formData.email}
             onChange={handleChange}
             required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           />
         </div>
         <div>
@@ -78,7 +88,7 @@ function RegistrationApi() {
             value={formData.password}
             onChange={handleChange}
             required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           />
         </div>
         <div>
@@ -88,7 +98,7 @@ function RegistrationApi() {
             name="role"
             value={formData.role}
             onChange={handleChange}
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
@@ -107,9 +117,9 @@ function RegistrationApi() {
           Register
         </button>
       </form>
-      <div style={{ marginTop: "20px" }}>
-        {message && <p style={{ color: "green" }}>{message}</p>}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+      <div style={{marginTop: "20px"}}>
+        {message && <p style={{color: "green"}}>{message}</p>}
+        {error && <p style={{color: "red"}}>{error}</p>}
       </div>
     </div>
   );

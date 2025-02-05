@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 function LoginApi() {
@@ -13,7 +13,7 @@ function LoginApi() {
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -24,17 +24,20 @@ function LoginApi() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(""); // Clear previous success message
-    setError("");   // Clear previous error message
+    setError(""); // Clear previous error message
 
     try {
-      const response = await axios.post("http://localhost:3001/api/login", formData);
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        formData
+      );
       setMessage(response.data.message || "Login successful!");
-      
+
       // Handle the token or any other data you want to store
-      localStorage.setItem("authToken", response.data.token);  // Store token in localStorage (or sessionStorage)
-      
+      localStorage.setItem("authToken", response.data.token); // Store token in localStorage (or sessionStorage)
+
       // Optionally, reset the form or navigate to another page
-      setFormData({ email: "", password: "" });
+      setFormData({email: "", password: ""});
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || "Error during login.");
@@ -45,7 +48,14 @@ function LoginApi() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px", textAlign: "center" }}>
+    <div
+      style={{
+        maxWidth: "400px",
+        margin: "auto",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
       <h3>Login Form</h3>
       <form onSubmit={handleSubmit}>
         <div>
@@ -57,7 +67,7 @@ function LoginApi() {
             value={formData.email}
             onChange={handleChange}
             required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           />
         </div>
         <div>
@@ -69,7 +79,7 @@ function LoginApi() {
             value={formData.password}
             onChange={handleChange}
             required
-            style={{ margin: "10px 0", padding: "5px", width: "100%" }}
+            style={{margin: "10px 0", padding: "5px", width: "100%"}}
           />
         </div>
         <button
@@ -85,9 +95,9 @@ function LoginApi() {
           Login
         </button>
       </form>
-      <div style={{ marginTop: "20px" }}>
-        {message && <p style={{ color: "green" }}>{message}</p>}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+      <div style={{marginTop: "20px"}}>
+        {message && <p style={{color: "green"}}>{message}</p>}
+        {error && <p style={{color: "red"}}>{error}</p>}
       </div>
     </div>
   );

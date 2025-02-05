@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"; // Import React hooks
+import React, {useState, useEffect} from "react"; // Import React hooks
 import axios from "axios"; // Import Axios for API calls
-import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal components
+import {Modal, Button} from "react-bootstrap"; // Import Bootstrap Modal components
 
-function ShoppingPage({ onEdit, onDelete }) {
+function ShoppingPage({onEdit, onDelete}) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,9 @@ function ShoppingPage({ onEdit, onDelete }) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/getallproduct");
+        const response = await axios.get(
+          "http://localhost:8000/api/getallproduct"
+        );
         const totalProducts = response.data.length;
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
@@ -67,11 +69,11 @@ function ShoppingPage({ onEdit, onDelete }) {
       if (productExists) {
         return prevCart.map((item) =>
           item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? {...item, quantity: item.quantity + 1}
             : item
         );
       } else {
-        return [...prevCart, { ...product, quantity: 1 }];
+        return [...prevCart, {...product, quantity: 1}];
       }
     });
   };
@@ -81,7 +83,7 @@ function ShoppingPage({ onEdit, onDelete }) {
       const existingProduct = prevCart.find((item) => item._id === productId);
       if (existingProduct.quantity > 1) {
         return prevCart.map((item) =>
-          item._id === productId ? { ...item, quantity: item.quantity - 1 } : item
+          item._id === productId ? {...item, quantity: item.quantity - 1} : item
         );
       } else {
         return prevCart.filter((item) => item._id !== productId);
@@ -91,7 +93,9 @@ function ShoppingPage({ onEdit, onDelete }) {
 
   const handleAddToWishlist = (product) => {
     setWishlist((prevWishlist) => {
-      const productExists = prevWishlist.find((item) => item._id === product._id);
+      const productExists = prevWishlist.find(
+        (item) => item._id === product._id
+      );
       if (!productExists) {
         return [...prevWishlist, product];
       }
@@ -135,7 +139,7 @@ function ShoppingPage({ onEdit, onDelete }) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh" }}
+        style={{height: "100vh"}}
       >
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
@@ -195,7 +199,7 @@ function ShoppingPage({ onEdit, onDelete }) {
                     src={product.image}
                     className="card-img-top"
                     alt={product.product_name}
-                    style={{ height: "200px", objectFit: "contain" }}
+                    style={{height: "200px", objectFit: "contain"}}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.product_name}</h5>
@@ -223,10 +227,16 @@ function ShoppingPage({ onEdit, onDelete }) {
       </div>
 
       <div className="d-flex justify-content-end mt-4">
-        <button className="btn btn-outline-primary me-2" onClick={handleModalShow}>
+        <button
+          className="btn btn-outline-primary me-2"
+          onClick={handleModalShow}
+        >
           View Cart ({cart.length})
         </button>
-        <button className="btn btn-outline-warning" onClick={handleWishlistModalShow}>
+        <button
+          className="btn btn-outline-warning"
+          onClick={handleWishlistModalShow}
+        >
           View Wishlist ({wishlist.length})
         </button>
       </div>
@@ -342,4 +352,4 @@ function ShoppingPage({ onEdit, onDelete }) {
   );
 }
 
-export default ShoppingPage.js;
+export default ShoppingPage;
