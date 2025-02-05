@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"; // Import React hooks
 import axios from "axios"; // Import Axios for API calls
 import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal components
 
-function AddToCart({ onEdit, onDelete }) {
+function ShoppingPage({ onEdit, onDelete }) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,9 @@ function AddToCart({ onEdit, onDelete }) {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState([]); // Cart state
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [wishlist, setWishlist] = useState([]); // Wishlist state
+  const [showModal, setShowModal] = useState(false); // Cart modal visibility state
+  const [showWishlistModal, setShowWishlistModal] = useState(false); // Wishlist modal visibility state
   const pageSize = 6; // Items per page
 
   useEffect(() => {
@@ -87,18 +89,35 @@ function AddToCart({ onEdit, onDelete }) {
     });
   };
 
-  // ✅ Function to calculate total price of cart items
+  const handleAddToWishlist = (product) => {
+    setWishlist((prevWishlist) => {
+      const productExists = prevWishlist.find((item) => item._id === product._id);
+      if (!productExists) {
+        return [...prevWishlist, product];
+      }
+      return prevWishlist;
+    });
+  };
+
+  const handleRemoveFromWishlist = (productId) => {
+    setWishlist((prevWishlist) =>
+      prevWishlist.filter((item) => item._id !== productId)
+    );
+  };
+
   const calculateTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // ✅ Function to handle checkout
   const handleProceedToCheckout = () => {
     alert("Proceeding to checkout!"); // Replace this with actual checkout logic
   };
 
   const handleModalClose = () => setShowModal(false);
   const handleModalShow = () => setShowModal(true);
+
+  const handleWishlistModalClose = () => setShowWishlistModal(false);
+  const handleWishlistModalShow = () => setShowWishlistModal(true);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -184,10 +203,16 @@ function AddToCart({ onEdit, onDelete }) {
                       Price: ₹{product.price}
                     </h6>
                     <button
-                      className="btn btn-outline-success"
+                      className="btn btn-outline-success me-2"
                       onClick={() => handleAddToCart(product)}
                     >
                       Add to Cart
+                    </button>
+                    <button
+                      className="btn btn-outline-warning"
+                      onClick={() => handleAddToWishlist(product)}
+                    >
+                      Add to Wishlist
                     </button>
                   </div>
                 </div>
@@ -198,8 +223,11 @@ function AddToCart({ onEdit, onDelete }) {
       </div>
 
       <div className="d-flex justify-content-end mt-4">
-        <button className="btn btn-outline-primary" onClick={handleModalShow}>
+        <button className="btn btn-outline-primary me-2" onClick={handleModalShow}>
           View Cart ({cart.length})
+        </button>
+        <button className="btn btn-outline-warning" onClick={handleWishlistModalShow}>
+          View Wishlist ({wishlist.length})
         </button>
       </div>
 
@@ -252,6 +280,43 @@ function AddToCart({ onEdit, onDelete }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Modal show={showWishlistModal} onHide={handleWishlistModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Your Wishlist</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {wishlist.length === 0 ? (
+            <p>Your wishlist is empty.</p>
+          ) : (
+            <ul className="list-group">
+              {wishlist.map((item) => (
+                <li
+                  key={item._id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <h5>{item.product_name}</h5>
+                    <p>Price: ₹{item.price}</p>
+                  </div>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => handleRemoveFromWishlist(item._id)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleWishlistModalClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className="d-flex justify-content-center mt-4">
         <button
           className="btn btn-sm btn-outline-primary mx-1"
@@ -277,4 +342,4 @@ function AddToCart({ onEdit, onDelete }) {
   );
 }
 
-export default AddToCart;
+export default ShoppingPage.js;
