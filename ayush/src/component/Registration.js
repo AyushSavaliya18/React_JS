@@ -1,137 +1,115 @@
-import React from "react"; // Import React to use JSX and React hooks
-import {useState} from "react"; // Import the useState hook to manage state
-import Nav from "./Nav"; // Import the Nav component
-// import {Link} from "react-router-dom";
+import React, {useState} from "react";
+import Nav from "./Nav";
 import RegistrationApi from "./RegistraionApi";
+import "./Registration.css"; // Import the new CSS file
 
 function Registration() {
-  // State to hold form data (username, email, password, role)
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    role: "user", // Default role is set to 'user'
+    role: "user",
   });
 
-  // State to store messages (such as error or success messages)
-  const [message, setMessage] = useState(0);
+  const [message, setMessage] = useState("");
 
-  // Function to handle changes in input fields (username, email, password, role)
   const handleChange = (e) => {
-    const {name, value} = e.target; // Get the name and value of the input field
-    // Update the corresponding value in formData
+    const {name, value} = e.target;
     setFormData((prev) => ({
-      ...prev, // Keep previous values unchanged
-      [name]: value, // Update the specific field
+      ...prev,
+      [name]: value,
     }));
   };
 
-  // Function to handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission (page reload)
+    e.preventDefault();
 
-    const {username, email, password} = formData; // Destructure the form data
+    const {username, email, password} = formData;
 
-    // If any of the fields (username, email, password) are empty, show an error message
     if (!username || !email || !password) {
-      setMessage("All fields are required!"); // Set an error message
-      return; // Exit the function if validation fails
+      setMessage("All fields are required!");
+      return;
     }
 
-    // Retrieve the list of users from localStorage, or initialize an empty array if not present
     const users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Add the new user to the list of users
     users.push(formData);
-
-    // Save the updated list of users back to localStorage
     localStorage.setItem("users", JSON.stringify(users));
 
-    // Reset form data after successful submission
-    setFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
+    setFormData({username: "", email: "", password: "", role: "user"});
 
-    // Set a success message after the registration is complete
     setMessage("Registration successful!");
   };
 
   return (
     <div>
       <Nav />
-      <div className="form">
-        <h1>Registration Form</h1>
-        {/* Display the form title */}
-        {/* Conditionally render the message (if it's set, display it) */}
+      <div className="registration-container">
+        <h1 className="registration-title">Registration Form</h1>
 
-        {/* Registration form */}
-        <form onSubmit={handleSubmit}>
-          {/* Username input field */}
-          Username :
+        <form onSubmit={handleSubmit} className="registration-form">
+          <label className="registration-label">Username:</label>
           <input
             type="text"
             name="username"
             value={formData.username}
-            onChange={handleChange} // Update form data when the user types
-            required // Ensure the field is not empty
+            onChange={handleChange}
+            required
+            className="registration-input"
           />
-          <br />
-          <br />
-          {/* Email input field */}
-          Email :
+
+          <label className="registration-label">Email:</label>
           <input
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange} // Update form data when the user types
-            required // Ensure the field is not empty
+            onChange={handleChange}
+            required
+            className="registration-input"
           />
-          <br />
-          <br />
-          {/* Password input field */}
-          Password :
+
+          <label className="registration-label">Password:</label>
           <input
             type="password"
             name="password"
             value={formData.password}
-            onChange={handleChange} // Update form data when the user types
-            required // Ensure the field is not empty
+            onChange={handleChange}
+            required
+            className="registration-input"
           />
-          <br />
-          <br />
-          {/* Dropdown to select the user's role */}
+
+          <label className="registration-label">Role:</label>
           <select
             name="role"
             value={formData.role}
-            onChange={handleChange} // Update form data when the user selects a role
+            onChange={handleChange}
+            className="registration-select"
           >
-            <option value="user">User</option> {/* Option for 'user' role */}
-            <option value="admin">Admin</option> {/* Option for 'admin' role */}
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
           </select>
-          <br />
-          <br />
-          {/* Submit button */}
-          <button type="submit" className="button">
-            Register
-          </button>{" "}
-          {/* Submit form on click */}
-          {message && <p>{message}</p>}
-          <br />
-        </form>
-        <h3>
-          Already have an Account? <a href="./login">Login</a>
-        </h3>
 
-        <h3>
-          <br />
-          <br />
-          If you Want to Register through Api Fill Below Form
+          <button type="submit" className="registration-button">
+            Register
+          </button>
+
+          {message && <p className="registration-message">{message}</p>}
+        </form>
+
+        <br />
+        <br />
+
+        <h3 className="registration-api-heading">
+          If you want to register through API, fill the form below:
         </h3>
         <RegistrationApi />
+
+        <br />
+        <h3 className="registration-login-text">
+          Already have an account? <a href="./login">Login</a>
+        </h3>
       </div>
     </div>
   );
 }
-export default Registration; // Export the Registration component to use in other parts of the app
+
+export default Registration;

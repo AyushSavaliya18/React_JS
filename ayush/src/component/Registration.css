@@ -1,0 +1,86 @@
+/* Registration Container */
+.registration-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title */
+  .registration-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styling */
+  .registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .registration-label {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    color: #555;
+  }
+  
+  .registration-input,
+  .registration-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .registration-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  
+  .registration-button:hover {
+    background: #218838;
+  }
+  
+  /* Message Styling */
+  .registration-message {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: green;
+  }
+  
+  /* Login Link */
+  .registration-login-text {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  
+  .registration-login-text a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .registration-login-text a:hover {
+    text-decoration: underline;
+  }
+  
+  /* API Registration Heading */
+  .registration-api-heading {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #444;
+  }
+  

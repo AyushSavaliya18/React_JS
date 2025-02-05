@@ -1,97 +1,85 @@
 import React, {useState} from "react";
 import Nav from "./Nav";
 import LoginApi from "./LoginApi";
-// Define the Login component
+import "./Login.css"; // Import the new CSS file
+
 function Login() {
-  // State for storing form data (email and password)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // State for storing the message to show after form submission (e.g., success or error)
-  const [message, setMessage] = useState(0);
+  const [message, setMessage] = useState("");
 
-  // Handle form input changes
   const handleChange = (e) => {
-    const {name, value} = e.target; // Destructure name and value from the event target
+    const {name, value} = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value, // Update only the corresponding field (email or password)
+      [name]: value,
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload on form submission
-    const {email, password} = formData; // Extract email and password from form data
+    e.preventDefault();
+    const {email, password} = formData;
 
-    // Get stored users from localStorage (or initialize as an empty array if not found)
-    const storeusers = JSON.parse(localStorage.getItem("users")) || [];
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Find a user that matches the entered email and password
-    const user = storeusers.find(
+    const user = storedUsers.find(
       (user) => user.email === email && user.password === password
     );
 
-    // Check if a user was found and update the message accordingly
     if (user) {
-      setMessage("login successful!"); // Display success message if user is found
+      setMessage("Login successful!");
     } else {
-      setMessage("invalid email or password!"); // Display error message if no match
+      setMessage("Invalid email or password!");
     }
 
-    // Clear the form data after submission
-    setFormData({
-      email: "",
-      password: "",
-    });
+    setFormData({email: "", password: ""});
   };
 
   return (
     <div>
       <Nav />
-      <div className="form">
-      <h1>Login Form</h1>
-      {/* Display the message if available */}
-      {/* Form for user login */}
-      <br />
+      <div className="login-container">
+        <h1 className="login-title">Login Form</h1>
 
-      <form onSubmit={handleSubmit}>
-        Email:
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-        Password:
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-        <button type="submit">Login</button>
-        <br />
-        <br />
-        {message && <p>{message}</p>}
-      </form>
-      <h3>
-        Don't have an account? <a href="./registration">Register</a>
-      </h3>
-      <h3>
-          <br />
-          <br />
-          If you Want to Login through Api Fill Below Form
+        <form onSubmit={handleSubmit} className="login-form">
+          <label className="login-label">Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="login-input"
+          />
+
+          <label className="login-label">Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="login-input"
+          />
+
+          <button type="submit" className="login-button">
+            Login
+          </button>
+
+          {message && <p className="login-message">{message}</p>}
+        </form>
+
+        <h3 className="login-api-heading">
+          If you want to log in through API, fill the form below:
         </h3>
         <LoginApi />
+        <br />
+        <h3 className="login-register-text">
+          Don't have an account? <a href="./registration">Register</a>
+        </h3>
       </div>
     </div>
   );
