@@ -5,8 +5,8 @@ function Nav() {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="./Nav.js">
-            Navbar
+          <a className="navbar-brand" href="/Home">
+            E-Commerce
           </a>
           <button
             className="navbar-toggler"
@@ -31,12 +31,12 @@ function Nav() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="./about">
+                <a className="nav-link" href="/about">
                   About
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="./AddProduct">
+                <a className="nav-link" href="/Products">
                   Products
                 </a>
               </li>
@@ -58,12 +58,12 @@ function Nav() {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <a className="dropdown-item" href="./login">
+                    <a className="dropdown-item" href="/login">
                       Login
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="./registration">
+                    <a className="dropdown-item" href="/registration">
                       Registration
                     </a>
                   </li>

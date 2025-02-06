@@ -6,7 +6,7 @@ import About from "./component/About";
 import Registration from "./component/Registration";
 import Login from "./component/Login";
 import AdminHome from "./Admin/AdminHome";
-import ProductList from "./component/ProductList";
+import Products from "./component/ShoppingPage";
 import ProductManager from "./Admin/ProductManager";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/" element={<ProductManager />} />
-          <Route path="/products" element={<ProductList />} />
+          <Route path="/Products" element={<Products />} />
         </Routes>
       </BrowserRouter>
     </div>
