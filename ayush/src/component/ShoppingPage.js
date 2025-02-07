@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"; // Import React hooks
 import axios from "axios"; // Import Axios for API calls
 import {Modal, Button} from "react-bootstrap"; // Import Bootstrap Modal components
+import PaymentButton from "./PaymentButton";
 
 function ShoppingPage({onEdit, onDelete}) {
   const [products, setProducts] = useState([]);
@@ -286,7 +287,7 @@ function ShoppingPage({onEdit, onDelete}) {
             onClick={handleProceedToCheckout}
             disabled={cart.length === 0}
           >
-            Proceed to Checkout
+            <PaymentButton />
           </Button>
         </Modal.Footer>
       </Modal>

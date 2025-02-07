@@ -1,4 +1,5 @@
 const express = require("express");
+const Razorpay = require("razorpay");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -29,8 +30,6 @@ const userSchema = new mongoose.Schema({
 const Register = mongoose.model("Register", userSchema, "register");
 
 // Register Route (for initial sign up)
-
-
 
 app.post("/api/register", async (req, res) => {
   const {username, email, password, role} = req.body;
@@ -96,7 +95,6 @@ const productSchema = new mongoose.Schema({
 });
 
 const Product = mongoose.model("Product", productSchema);
-
 
 app.get("/api/getallproduct", async (req, res) => {
   try {
@@ -181,6 +179,32 @@ app.delete("/api/products/:id", async (req, res) => {
     console.error("Error deleting product:", error);
     res.status(500).json({message: "Error deleting product"});
   }
+});
+
+// Razorpay instance
+const razorpay = new Razorpay({
+  key_id: "YOUR_KEY_ID", // Replace with your Razorpay Key ID
+  key_secret: "YOUR_KEY_SECRET", // Replace with your Razorpay Key Secret
+});
+// Endpoint to create an order
+app.post("/create-order", async (req, res) => {
+  const {amount, currency} = req.body;
+  const options = {
+    amount: amount * 100, // Amount in smallest currency unit (paise for INR)
+    currency: currency,
+    receipt: `receipt_${Date.now()}`,
+  };
+  try {
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+// Endpoint for webhook (optional, for payment status updates)
+app.post("/webhook", (req, res) => {
+  console.log(req.body); // Process webhook data
+  res.status(200).send("Webhook received");
 });
 
 // Start the server
