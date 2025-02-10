@@ -25,7 +25,7 @@ function Nav() {
                 <a
                   className="nav-link active"
                   aria-current="page"
-                  href="./Home"
+                  href="./"
                 >
                   Home
                 </a>
