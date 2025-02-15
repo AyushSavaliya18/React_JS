@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react"; // Import React hooks
-import axios from "axios"; // Import Axios for API calls
-import {Modal, Button} from "react-bootstrap"; // Import Bootstrap Modal components
-import PaymentButton from "./PaymentButton";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import {Modal, Button, Form} from "react-bootstrap";
+// import PaymentButton from "./PaymentButton";
 
 function ShoppingPage({onEdit, onDelete}) {
   const [products, setProducts] = useState([]);
@@ -11,11 +11,21 @@ function ShoppingPage({onEdit, onDelete}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState([]); // Cart state
-  const [wishlist, setWishlist] = useState([]); // Wishlist state
-  const [showModal, setShowModal] = useState(false); // Cart modal visibility state
-  const [showWishlistModal, setShowWishlistModal] = useState(false); // Wishlist modal visibility state
-  const pageSize = 6; // Items per page
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showWishlistModal, setShowWishlistModal] = useState(false);
+  const [showAddressModal, setShowAddressModal] = useState(false); // New state for address modal
+  const [address, setAddress] = useState({
+    // New state for address details
+    name: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+  });
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,7 +47,7 @@ function ShoppingPage({onEdit, onDelete}) {
     };
 
     fetchProducts();
-  }, [currentPage]); // Re-fetch products when `currentPage` changes
+  }, [currentPage]);
 
   const handleSort = (order) => {
     const sorted = [...filteredProducts].sort((a, b) =>
@@ -115,7 +125,15 @@ function ShoppingPage({onEdit, onDelete}) {
   };
 
   const handleProceedToCheckout = () => {
-    alert("Proceeding to checkout!"); // Replace this with actual checkout logic
+    setShowAddressModal(true); // Show address form modal
+  };
+
+  const handleAddressSubmit = () => {
+    // Here you can handle the address submission, e.g., send it to the server
+    console.log("Address submitted:", address);
+    setShowAddressModal(false); // Close the address form modal
+    // Proceed to payment
+    alert("Proceeding to payment!");
   };
 
   const handleModalClose = () => setShowModal(false);
@@ -123,6 +141,8 @@ function ShoppingPage({onEdit, onDelete}) {
 
   const handleWishlistModalClose = () => setShowWishlistModal(false);
   const handleWishlistModalShow = () => setShowWishlistModal(true);
+
+  const handleAddressModalClose = () => setShowAddressModal(false);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -287,7 +307,7 @@ function ShoppingPage({onEdit, onDelete}) {
             onClick={handleProceedToCheckout}
             disabled={cart.length === 0}
           >
-            <PaymentButton />
+            Proceed to Checkout
           </Button>
         </Modal.Footer>
       </Modal>
@@ -324,6 +344,84 @@ function ShoppingPage({onEdit, onDelete}) {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleWishlistModalClose}>
             Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showAddressModal} onHide={handleAddressModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Enter Your Address</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your full name"
+                value={address.name}
+                onChange={(e) => setAddress({...address, name: e.target.value})}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Street Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your street address"
+                value={address.street}
+                onChange={(e) =>
+                  setAddress({...address, street: e.target.value})
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your city"
+                value={address.city}
+                onChange={(e) => setAddress({...address, city: e.target.value})}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>State</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your state"
+                value={address.state}
+                onChange={(e) =>
+                  setAddress({...address, state: e.target.value})
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Zip Code</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your zip code"
+                value={address.zip}
+                onChange={(e) => setAddress({...address, zip: e.target.value})}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Country</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your country"
+                value={address.country}
+                onChange={(e) =>
+                  setAddress({...address, country: e.target.value})
+                }
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleAddressModalClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleAddressSubmit}>
+            Submit Address
           </Button>
         </Modal.Footer>
       </Modal>
