@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {Modal, Button, Form} from "react-bootstrap";
-// import PaymentButton from "./PaymentButton";
+import { Modal, Button, Form } from "react-bootstrap";
 
-function ShoppingPage({onEdit, onDelete}) {
+function ShoppingPage({ onEdit, onDelete }) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,9 +14,8 @@ function ShoppingPage({onEdit, onDelete}) {
   const [wishlist, setWishlist] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showWishlistModal, setShowWishlistModal] = useState(false);
-  const [showAddressModal, setShowAddressModal] = useState(false); // New state for address modal
+  const [showAddressModal, setShowAddressModal] = useState(false);
   const [address, setAddress] = useState({
-    // New state for address details
     name: "",
     street: "",
     city: "",
@@ -30,9 +28,7 @@ function ShoppingPage({onEdit, onDelete}) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/getallproduct"
-        );
+        const response = await axios.get("http://localhost:8000/api/getallproduct");
         const totalProducts = response.data.length;
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
@@ -79,12 +75,10 @@ function ShoppingPage({onEdit, onDelete}) {
       const productExists = prevCart.find((item) => item._id === product._id);
       if (productExists) {
         return prevCart.map((item) =>
-          item._id === product._id
-            ? {...item, quantity: item.quantity + 1}
-            : item
+          item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        return [...prevCart, {...product, quantity: 1}];
+        return [...prevCart, { ...product, quantity: 1 }];
       }
     });
   };
@@ -94,7 +88,7 @@ function ShoppingPage({onEdit, onDelete}) {
       const existingProduct = prevCart.find((item) => item._id === productId);
       if (existingProduct.quantity > 1) {
         return prevCart.map((item) =>
-          item._id === productId ? {...item, quantity: item.quantity - 1} : item
+          item._id === productId ? { ...item, quantity: item.quantity - 1 } : item
         );
       } else {
         return prevCart.filter((item) => item._id !== productId);
@@ -104,9 +98,7 @@ function ShoppingPage({onEdit, onDelete}) {
 
   const handleAddToWishlist = (product) => {
     setWishlist((prevWishlist) => {
-      const productExists = prevWishlist.find(
-        (item) => item._id === product._id
-      );
+      const productExists = prevWishlist.find((item) => item._id === product._id);
       if (!productExists) {
         return [...prevWishlist, product];
       }
@@ -115,9 +107,7 @@ function ShoppingPage({onEdit, onDelete}) {
   };
 
   const handleRemoveFromWishlist = (productId) => {
-    setWishlist((prevWishlist) =>
-      prevWishlist.filter((item) => item._id !== productId)
-    );
+    setWishlist((prevWishlist) => prevWishlist.filter((item) => item._id !== productId));
   };
 
   const calculateTotalPrice = () => {
@@ -125,15 +115,43 @@ function ShoppingPage({onEdit, onDelete}) {
   };
 
   const handleProceedToCheckout = () => {
-    setShowAddressModal(true); // Show address form modal
+    setShowAddressModal(true);
   };
 
   const handleAddressSubmit = () => {
-    // Here you can handle the address submission, e.g., send it to the server
     console.log("Address submitted:", address);
-    setShowAddressModal(false); // Close the address form modal
-    // Proceed to payment
-    alert("Proceeding to payment!");
+    setShowAddressModal(false);
+    initiateRazorpayPayment();
+  };
+
+  const initiateRazorpayPayment = () => {
+    const options = {
+      key: "YOUR_RAZORPAY_KEY_ID", // Replace with your Razorpay key ID
+      amount: calculateTotalPrice() * 100, // Amount in paise (e.g., 1000 paise = ₹10)
+      currency: "INR",
+      name: "Your Company Name",
+      description: "Payment for your order",
+      image: "https://your-company-logo-url.com/logo.png", // Replace with your company logo URL
+      order_id: "", // You can generate this server-side
+      handler: function (response) {
+        alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+        // You can handle the payment success logic here, e.g., send the payment details to your server
+      },
+      prefill: {
+        name: address.name,
+        email: "customer@example.com", // Replace with customer's email
+        contact: "9999999999", // Replace with customer's phone number
+      },
+      notes: {
+        address: `${address.street}, ${address.city}, ${address.state}, ${address.zip}, ${address.country}`,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
 
   const handleModalClose = () => setShowModal(false);
@@ -158,10 +176,7 @@ function ShoppingPage({onEdit, onDelete}) {
 
   if (loading) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{height: "100vh"}}
-      >
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -220,7 +235,7 @@ function ShoppingPage({onEdit, onDelete}) {
                     src={product.image}
                     className="card-img-top"
                     alt={product.product_name}
-                    style={{height: "200px", objectFit: "contain"}}
+                    style={{ height: "200px", objectFit: "contain" }}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.product_name}</h5>
@@ -360,7 +375,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your full name"
                 value={address.name}
-                onChange={(e) => setAddress({...address, name: e.target.value})}
+                onChange={(e) => setAddress({ ...address, name: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -369,9 +384,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your street address"
                 value={address.street}
-                onChange={(e) =>
-                  setAddress({...address, street: e.target.value})
-                }
+                onChange={(e) => setAddress({ ...address, street: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -380,7 +393,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your city"
                 value={address.city}
-                onChange={(e) => setAddress({...address, city: e.target.value})}
+                onChange={(e) => setAddress({ ...address, city: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -389,9 +402,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your state"
                 value={address.state}
-                onChange={(e) =>
-                  setAddress({...address, state: e.target.value})
-                }
+                onChange={(e) => setAddress({ ...address, state: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -400,7 +411,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your zip code"
                 value={address.zip}
-                onChange={(e) => setAddress({...address, zip: e.target.value})}
+                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -409,9 +420,7 @@ function ShoppingPage({onEdit, onDelete}) {
                 type="text"
                 placeholder="Enter your country"
                 value={address.country}
-                onChange={(e) =>
-                  setAddress({...address, country: e.target.value})
-                }
+                onChange={(e) => setAddress({ ...address, country: e.target.value })}
               />
             </Form.Group>
           </Form>
