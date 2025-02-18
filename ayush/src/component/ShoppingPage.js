@@ -106,6 +106,10 @@ function ShoppingPage({ onEdit, onDelete }) {
     });
   };
 
+  const handleAddWishlistToCart = (product) => {
+    handleAddToCart(product);
+  };
+
   const handleRemoveFromWishlist = (productId) => {
     setWishlist((prevWishlist) => prevWishlist.filter((item) => item._id !== productId));
   };
@@ -345,12 +349,20 @@ function ShoppingPage({ onEdit, onDelete }) {
                     <h5>{item.product_name}</h5>
                     <p>Price: ₹{item.price}</p>
                   </div>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleRemoveFromWishlist(item._id)}
-                  >
-                    Remove
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-sm btn-outline-success me-2"
+                      onClick={() => handleAddWishlistToCart(item)}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleRemoveFromWishlist(item._id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
