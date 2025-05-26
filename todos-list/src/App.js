@@ -1,12 +1,15 @@
 import "./App.css";
+import Header from "./component/header";
+import Todos from "./component/todos";
+import Footer from "./component/footer";
 
 function App() {
   return (
-        <>
-      
-    <h1>hello</h1>
-    <h1>my jhgj yugiyu ftyfgi</h1>
-      </>
+    <div>
+      <Header title="TodosList" searchBar={true}/>
+      <Todos />
+      <Footer />
+    </div>
   );
 }
 
