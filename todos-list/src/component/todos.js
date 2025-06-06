@@ -1,20 +1,12 @@
-import React from 'react'
+ import React from "react";
+import {TodoItem} from "../component/TodoItem";
 
-const todos = () => {
+export const todos = (props) => {
   return (
-    <div>
-
-      <h2>Todos Works Buddy</h2>
-      <p>Here you can manage your tasks efficiently.</p>
-      <ul>
-        <li>Task 1: Complete React project</li>
-        <li>Task 2: Review code</li>
-        <li>Task 3: Submit assignment</li>
-        <li>Task 4: Prepare for meeting</li>
-        <li>Task 5: Update documentation</li>
-      </ul>
+    <div className="container">
+      <h3>Todos List </h3>
+      {/* {this.props.todos} */}
+      <TodoItem todo={todo[0]} />
     </div>
-  )
-}
-
-export default todos
+  );
+};
