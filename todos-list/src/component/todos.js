@@ -1,12 +1,15 @@
- import React from "react";
-import {TodoItem} from "../component/TodoItem";
+ // ✅ src/component/Todos.js
+import React from "react";
+import { TodoItem } from "./TodoItem";
 
-export const todos = (props) => {
+export default function Todos(props) {
   return (
     <div className="container">
-      <h3>Todos List </h3>
-      {/* {this.props.todos} */}
-      <TodoItem todo={todo[0]} />
+      <h3>Todos List</h3>
+      {/* Loop through todos */}
+      {props.todos.map((todo) => (
+        <TodoItem key={todo.sno} todo={todo} />
+      ))}
     </div>
   );
-};
+}

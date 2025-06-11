@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import TodoItem from "./component/TodoItem.tsx";
+import Todos from "./component/Todos";
 
 function App() {
   let todos = [
@@ -28,7 +28,7 @@ function App() {
   ];
   return (
     <div>
-      <Header title="TodosList" searchBar={false} />
+      <Header title="TodosList" searchBar={true} />
       <Todos todos={todos} />
       <Footer />
     </div>
