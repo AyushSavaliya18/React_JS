@@ -1,15 +1,15 @@
- // ✅ src/component/Todos.js
 import React from "react";
-import { TodoItem } from "./TodoItem";
+import {TodoItem} from "./TodoItem";
 
-export default function Todos(props) {
-  return (
+
+export const Todos = (props) => {
+  return(
     <div className="container">
-      <h3>Todos List</h3>
-      {/* Loop through todos */}
+      <h3 className="text-center">Todos List</h3>
+      
       {props.todos.map((todo) => (
-        <TodoItem key={todo.sno} todo={todo} />
-      ))}
+          <TodoItem todo={todo} />
+         ))}
     </div>
-  );
+  )
 }
