@@ -15,7 +15,11 @@ function App() {
       title: "Goto The office",
       Description: "Do work nicely",
     },
-
+    {
+      sno: 3,
+      title: "Go for a run",
+      Description: "Go and run as long as you can",
+    },
   ];
   return (
     <div>
