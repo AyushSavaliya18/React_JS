@@ -2,8 +2,13 @@ import "./App.css";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
 import {Todos} from "./component/Todos";
+import { log } from "console";
 
 function App() {
+  const onDelete = () =>{
+    console.log("onDelete");
+    
+  }
   let todos = [
     {
       sno: 1,
@@ -20,11 +25,16 @@ function App() {
       title: "Go for a run",
       Description: "Go and run as long as you can",
     },
+    {
+      sno:4,
+      title:"Cinema",
+      Description:"Cinema is a ultimate pleasure."
+    }
   ];
   return (
     <div>
       <Header title="TodosList" searchBar={true} />
-      <Todos todos={todos} />
+      <Todos todos={todos} onDelete={onDelete} />
       <Footer />
     </div>
   );
