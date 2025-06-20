@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-export default function Header(props) {
+export default function Header(props) { 
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">

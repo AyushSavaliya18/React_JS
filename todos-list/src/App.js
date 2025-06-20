@@ -2,14 +2,17 @@ import "./App.css";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
 import {Todos} from "./component/Todos";
-import { log } from "console";
+import {useEffect, useState} from "react";
 
 function App() {
-  const onDelete = () =>{
-    console.log("onDelete");
-    
-  }
-  let todos = [
+  const onDelete = (todo) => {
+    console.log("Delete This Todo", todo);
+
+    setTodos(todos.filter((e)=>{
+      return e !== todo;
+    }))
+  };
+  const [todos, setTodos] = useState([
     {
       sno: 1,
       title: "Goto The gym",
@@ -26,11 +29,11 @@ function App() {
       Description: "Go and run as long as you can",
     },
     {
-      sno:4,
-      title:"Cinema",
-      Description:"Cinema is a ultimate pleasure."
-    }
-  ];
+      sno: 4,
+      title: "Cinema",
+      Description: "Cinema is a ultimate pleasure.",
+    },
+  ]);
   return (
     <div>
       <Header title="TodosList" searchBar={true} />
