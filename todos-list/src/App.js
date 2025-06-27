@@ -1,62 +1,55 @@
-import React, { useState } from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import { AddTodo } from "./component/AddTodo";
-import { TodoList } from "./component/TodosList";
+import {Todos} from "./component/Todos";
+import {AddTodo} from "./component/AddTodo";
 
 function App() {
-  // ✅ Step 1: Load todos from localStorage on first render
-  const getInitialTodos = () => {
-    const todos = [];
+  const [todos, setTodos] = useState([]);
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith("todo-")) {
-        try {
-          const item = localStorage.getItem(key);
-          if (item) {
-            const todo = JSON.parse(item);
-            if (todo && typeof todo.sno === "number") {
-              todos.push(todo);
-            }
-          }
-        } catch (e) {
-          console.error(`Error parsing ${key}:`, e);
-        }
-      }
-    }
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/todos")
+      .then((res) => {
+        setTodos(res.data);
+        console.log("Fetched from DB:", res.data);
+      })
+      .catch((err) => console.error("Error fetching todos:", err));
+  }, []);
 
-    todos.sort((a, b) => a.sno - b.sno);
-    return todos;
-  };
-
-  // ✅ Step 2: Initialize state once
-  const [todos, setTodos] = useState(() => getInitialTodos());
-
-  // ✅ Step 3: Add todo and save to localStorage
   const addTodo = (title, description) => {
-    const sno = todos.length ? todos[todos.length - 1].sno + 1 : 1;
-    const newTodo = {
-      sno,
-      title,
-      description, // 👈 updated key
-    };
+    const sno = todos.length > 0 ? todos[todos.length - 1].sno + 1 : 1;
 
-    localStorage.setItem(`todo-${sno}`, JSON.stringify(newTodo));
-    setTodos([...todos, newTodo]);
+    axios
+      .post("http://localhost:8000/todos", {
+        title,
+        Description: description,
+        sno,
+      })
+      .then((res) => {
+        setTodos([...todos, res.data]);
+      })
+      .catch((err) => {
+        console.error("Error adding todo:", err);
+      });
   };
 
-  // ✅ Step 4: Delete todo from localStorage and state
   const onDelete = (todo) => {
-    localStorage.removeItem(`todo-${todo.sno}`);
-    setTodos(todos.filter((e) => e.sno !== todo.sno));
+    axios
+      .delete(`http://localhost:8000/todos/${todo._id}`)
+      .then(() => {
+        setTodos(todos.filter((t) => t._id !== todo._id));
+        console.log("Deleted from DB:", todo._id);
+      })
+      .catch((err) => console.error("Error deleting todo:", err));
   };
 
   return (
     <>
-      <Header title="My Todo List" searchBar={true} />
+      <Header />
       <AddTodo addTodo={addTodo} />
-      <TodoList todos={todos} onDelete={onDelete} />
+      <Todos todos={todos} onDelete={onDelete} />
       <Footer />
     </>
   );

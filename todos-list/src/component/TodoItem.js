@@ -1,30 +1,34 @@
 import React from "react";
 
 export const TodoItem = ({todo, onDelete}) => {
-  const todoStyle = {
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "15px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#f9f9f9",
-    height: "100%", // Fill the grid cell
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
+  const cardStyle = {
+    background: "linear-gradient(135deg,rgb(224, 226, 227),rgb(217, 225, 232))",
+    borderRadius: "15px",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    padding: "20px",
+    color: "#0d47a1",
+    minHeight: "180px",
+  };
+
+  const btnStyle = {
+    backgroundColor: "#e53935",
+    border: "none",
+    color: "#fff",
+    padding: "5px 12px",
+    borderRadius: "5px",
+    fontSize: "0.9rem",
   };
 
   return (
-    <div style={todoStyle}>
-      <div>
-        <h4>{todo.title}</h4>
-        <p>{todo.description}</p>
+    <div className="col-md-4 my-3">
+      <div style={cardStyle}>
+        <h5 className="fw-bold">{todo.title}</h5>
+        <p className="mb-2">{todo.Description}</p>
+        <p className="text-muted small">S.No: {todo.sno}</p>
+        <button style={btnStyle} onClick={() => onDelete(todo)}>
+          Delete
+        </button>
       </div>
-      <button
-        className="btn btn-sm btn-danger mt-3"
-        onClick={() => onDelete(todo)}
-      >
-        Delete
-      </button>
     </div>
   );
 };
